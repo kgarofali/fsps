@@ -7,7 +7,7 @@ MODULE SPS_VARS
 
 !-------set the spectral library------!
 #ifndef MILES
-#define MILES 1
+#define MILES 0
 #endif
 
 #ifndef BASEL
@@ -42,7 +42,7 @@ MODULE SPS_VARS
 !note that in the case of BPASS the SSPs are already pre-computed
 !so the spectral library, IMF, etc. is fixed in this case.
 #ifndef BPASS
-#define BPASS 0
+#define BPASS 1
 #endif
 
 !------set the dust emission model------!
@@ -124,18 +124,18 @@ MODULE SPS_VARS
   !turn on/off a Cloudy-based nebular emission model (cont+lines)
   !if set to 2, then the nebular emission lines are added at the SSP
   !level, which may be useful if the nebular parameters are fixed
-  INTEGER :: add_neb_emission=0
+  INTEGER :: add_neb_emission=1
   !turn on/off the nebular continuum component (automatically
   !turned off if the above is set to 0)
   INTEGER  :: add_neb_continuum=1
   !include dust in the Cloudy tables or not
-  INTEGER :: cloudy_dust=0
+  INTEGER :: cloudy_dust=1
 
   !turn on/off IGM absorption a la Madau (1995)
   INTEGER :: add_igm_absorption=0
 
   !turn on/off the X-ray binary (ULX) model from Garofali et al. (in prep)
-  INTEGER :: add_xrb_emission=0
+  INTEGER :: add_xrb_emission=1
 
   !turn on/off the addition of stellar remnants to the
   !computation of stellar masses
@@ -308,18 +308,18 @@ MODULE SPS_VARS
   !parameters for circumstellar dust models
   INTEGER, PARAMETER :: ntau_dagb=50, nteff_dagb=6
   !number of emission lines and continuum emission points
-  INTEGER, PARAMETER :: nemline=128, nlam_nebcont=1963
+  INTEGER, PARAMETER :: nemline=166, nlam_nebcont=2008
   !number of metallicity, age, and ionization parameter points
-  INTEGER, PARAMETER :: nebnz=11, nebnage=10, nebnip=7
+  INTEGER, PARAMETER :: nebnz=11, nebnage=9, nebnip=7
   !number of optical depths for AGN dust models
   INTEGER, PARAMETER :: nagndust=9
   !number of spectral points in the input library
   INTEGER, PARAMETER :: nagndust_spec=125
 
   INTEGER, PARAMETER :: nspec_xrb=15000
-  INTEGER, PARAMETER :: nt_xrb=7
-  INTEGER, PARAMETER :: nz_xrb=3
-  
+  INTEGER, PARAMETER :: nt_xrb=9
+  INTEGER, PARAMETER :: nz_xrb=11
+
   !------------IMF-related Constants--------------!
 
   !Salpeter IMF index
@@ -553,7 +553,7 @@ MODULE SPS_VARS
   REAL(SP), DIMENSION(nspec,nt_xrb,nz_xrb) :: spec_xrb=0.
   REAL(SP), DIMENSION(nt_xrb) :: ages_xrb=0.0
   REAL(SP), DIMENSION(nz_xrb) :: zmet_xrb=0.0
-  
+
   !------------Define TYPE structures-------------!
 
   !structure for the set of parameters necessary to generate a model
