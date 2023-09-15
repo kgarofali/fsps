@@ -990,10 +990,10 @@ SUBROUTINE SPS_SETUP(zin)
   !------------------Set up X-ray binary arrays--------------------!
   !----------------------------------------------------------------!
 
-  OPEN(98,FILE=TRIM(SPS_HOME)//'/SPECTRA/xrb/xsp.lambda',&
+  OPEN(98,FILE=TRIM(SPS_HOME)//'/SPECTRA/xrb/sxp.lambda',&
        STATUS='OLD',iostat=stat,ACTION='READ')
   IF (stat.NE.0) THEN
-     WRITE(*,*) 'SPS_SETUP ERROR: xsp.lambda cannot be opened'
+     WRITE(*,*) 'SPS_SETUP ERROR: sxp.lambda cannot be opened'
      STOP
   ENDIF
 
@@ -1009,10 +1009,10 @@ SUBROUTINE SPS_SETUP(zin)
   zz_str_xrb = (/'-1.30','-1.00','-0.80','-0.70','-0.50','-0.40','-0.30','-0.20','+0.00','+0.20','+0.30'/)
 
   DO j=1,11
-     OPEN(98,FILE=TRIM(SPS_HOME)//'/SPECTRA/xrb/xsp_feh'//zz_str_xrb(j)&
+     OPEN(98,FILE=TRIM(SPS_HOME)//'/SPECTRA/xrb/sxp_feh'//zz_str_xrb(j)&
           //'.spec',STATUS='OLD',iostat=stat,ACTION='READ')
      IF (stat.NE.0) THEN
-        WRITE(*,*) 'SPS_SETUP ERROR: xsp_feh'//zz_str_xrb(j)//&
+        WRITE(*,*) 'SPS_SETUP ERROR: sxp_feh'//zz_str_xrb(j)//&
              '.spec cannot be opened'
         STOP
      ENDIF
