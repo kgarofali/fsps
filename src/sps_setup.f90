@@ -896,85 +896,68 @@ SUBROUTINE SPS_SETUP(zin)
 
   IF (isoc_type.EQ.'bpss') THEN
 
-     !use nebular files with SXP contribution
-     IF (add_xrb_emission.EQ.1) THEN
-          !read in nebular continuum arrays.  Units are Lsun/Hz/Q
-          IF (cloudy_dust.EQ.1) THEN
-              OPEN(99,FILE=TRIM(SPS_HOME)//'/nebular/ZAU_WX_WD_'//isoc_type//&
-                   '.cont',STATUS='OLD',iostat=stat,ACTION='READ')
-          ELSE
-              OPEN(99,FILE=TRIM(SPS_HOME)//'/nebular/ZAU_WX_ND_'//isoc_type//&
-                   '.cont',STATUS='OLD',iostat=stat,ACTION='READ')
+       ! which nebular file to read?
+       IF (add_xrb_emission.EQ.1) THEN
+           IF (cloudy_dust.EQ.1) THEN
+               nebtype = 'WX_WD'
+           ELSE
+               nebtype = 'WX_ND'
+           ENDIF
+       ELSE
+           IF (cloudy_dust.EQ.1) THEN
+               nebtype = 'NX_WD'
+           ELSE
+               nebtype = 'NX_ND'
           ENDIF
-     !use nebular files without SXP contribution
-     ELSE
-          IF (cloudy_dust.EQ.1) THEN
-              OPEN(99,FILE=TRIM(SPS_HOME)//'/nebular/ZAU_NX_WD_'//isoc_type//&
-                   '.cont',STATUS='OLD',iostat=stat,ACTION='READ')
-          ELSE
-              OPEN(99,FILE=TRIM(SPS_HOME)//'/nebular/ZAU_NX_ND_'//isoc_type//&
-                   '.cont',STATUS='OLD',iostat=stat,ACTION='READ')
-          ENDIF
-     ENDIF
-     IF (stat.NE.0) THEN
-        WRITE(*,*) 'SPS_SETUP ERROR: nebular cont file cannot be opened. Only available for BPASS isochrones.'
-        STOP
-     ENDIF
-     !burn the header
-     READ(99,*)
-     !read the wavelength array
-     READ(99,*) readlambneb
-     DO i=1,nebnz
-        DO j=1,nebnage
-           DO k=1,nebnip
-              READ(99,*,iostat=stat) nebem_logz(i),nebem_age(j),nebem_logu(k)
-              READ(99,*,iostat=stat) readcontneb
-              !interpolate onto the main wavelength grid
-              !some values in the table are 0.0, set a floor of 1E-95
-              nebem_cont(:,i,j,k) = linterparr(readlambneb,&
-                   LOG10(readcontneb+10**(-95.d0)),spec_lambda)
-           ENDDO
-        ENDDO
-     ENDDO
-     CLOSE(99)
+       ENDIF
 
-     !use nebular files with SXP contribution
-     IF (add_xrb_emission.EQ.1) THEN
-          !read in nebular emission line luminosities.  Units are Lsun/Q
-          IF (cloudy_dust.EQ.1) THEN
-              OPEN(99,FILE=TRIM(SPS_HOME)//'/nebular/ZAU_WX_WD_'//isoc_type//&
-                   '.lines',STATUS='OLD',iostat=stat,ACTION='READ')
-          ELSE
-              OPEN(99,FILE=TRIM(SPS_HOME)//'/nebular/ZAU_WX_ND_'//isoc_type//&
-                   '.lines',STATUS='OLD',iostat=stat,ACTION='READ')
-          ENDIF
-     !use nebular files without SXP contribution
-     ELSE
-          IF (cloudy_dust.EQ.1) THEN
-              OPEN(99,FILE=TRIM(SPS_HOME)//'/nebular/ZAU_NX_WD_'//isoc_type//&
-                   '.lines',STATUS='OLD',iostat=stat,ACTION='READ')
-          ELSE
-              OPEN(99,FILE=TRIM(SPS_HOME)//'/nebular/ZAU_NX_ND_'//isoc_type//&
-                   '.lines',STATUS='OLD',iostat=stat,ACTION='READ')
-          ENDIF
-     ENDIF
-     IF (stat.NE.0) THEN
-        WRITE(*,*) 'SPS_SETUP ERROR: nebular line file cannot be opened. Only available for BPASS isochrones.'
-        STOP
-     ENDIF
-     !burn the header
-     READ(99,*)
-     !read the wavelength array
-     READ(99,*) nebem_line_pos
-     DO i=1,nebnz
-        DO j=1,nebnage
-           DO k=1,nebnip
-              READ(99,*,iostat=stat) nebem_logz(i),nebem_age(j),nebem_logu(k)
-              READ(99,*,iostat=stat) nebem_line(:,i,j,k)
-           ENDDO
-        ENDDO
-     ENDDO
-     CLOSE(99)
+       !read in nebular continuum arrays.  Units are Lsun/Hz/Q
+       OPEN(99,FILE=TRIM(SPS_HOME)//'/nebular/ZAU_'//nebtype//'_'//isoc_type//&
+            '.cont', STATUS='OLD',iostat=stat,ACTION='READ')
+       IF (stat.NE.0) THEN
+          WRITE(*,*) 'SPS_SETUP ERROR: nebular cont file cannot be opened. '
+          WRITE(*,*) TRIM(SPS_HOME)//'/nebular/ZAU_'//nebtype//'_'//isoc_type//&
+               '.cont'
+          STOP
+       ENDIF
+       !burn the header
+       READ(99,*)
+       !read the wavelength array
+       READ(99,*) readlambneb
+       DO i=1,nebnz
+          DO j=1,nebnage
+             DO k=1,nebnip
+                READ(99,*,iostat=stat) nebem_logz(i),nebem_age(j),nebem_logu(k)
+                READ(99,*,iostat=stat) readcontneb
+                !interpolate onto the main wavelength grid
+                !some values in the table are 0.0, set a floor of 1E-95
+                nebem_cont(:,i,j,k) = linterparr(readlambneb,&
+                     LOG10(readcontneb+10**(-95.d0)),spec_lambda)
+             ENDDO
+          ENDDO
+       ENDDO
+       CLOSE(99)
+
+       !read in nebular emission line luminosities.  Units are Lsun/Q
+       OPEN(99,FILE=TRIM(SPS_HOME)//'/nebular/ZAU_'//nebtype//'_'//isoc_type//&
+            '.lines',STATUS='OLD',iostat=stat,ACTION='READ')
+       IF (stat.NE.0) THEN
+          WRITE(*,*) 'SPS_SETUP ERROR: nebular line file cannot be opened. Only available for BPASS isochrones.'
+          STOP
+       ENDIF
+       !burn the header
+       READ(99,*)
+       !read the wavelength array
+       READ(99,*) nebem_line_pos
+       DO i=1,nebnz
+          DO j=1,nebnage
+             DO k=1,nebnip
+                READ(99,*,iostat=stat) nebem_logz(i),nebem_age(j),nebem_logu(k)
+                READ(99,*,iostat=stat) nebem_line(:,i,j,k)
+             ENDDO
+          ENDDO
+       ENDDO
+       CLOSE(99)
 
      !convert the nebem_age array to log(age), and log the emission arrays
      nebem_age  = LOG10(nebem_age)
