@@ -19,6 +19,7 @@ SUBROUTINE SPS_SETUP(zin)
   INTEGER, PARAMETER :: nzwmb=12, nspec_wmb=5508
   INTEGER :: n_isoc,z,zmin,zmax,nlam
   CHARACTER(1) :: char,sqpah
+  CHARACTER(5) :: nebtype
   CHARACTER(6) :: zstype
   CHARACTER(5) :: zstype5
   REAL(SP) :: dumr1,d1,d2,logage,x,a,zero=0.0,d,one=1.0,dz,dlam
