@@ -235,20 +235,20 @@ SUBROUTINE SSP_GEN(pset,mass_ssp,lbol_ssp,spec_ssp)
   ENDIF
 
   !-------------------------------------------------------------!
-  !-------add the nebular emission model at the SSP level-------!
-  !-------------------------------------------------------------!
-
-  IF (add_neb_emission.EQ.2) THEN
-     CALL ADD_NEBULAR(pset,spec_ssp,tspec_ssp)
-     spec_ssp = tspec_ssp
-  ENDIF
-
-  !-------------------------------------------------------------!
   !---------------add X-ray binaries the SSP level--------------!
   !-------------------------------------------------------------!
 
   IF (add_xrb_emission.EQ.1) THEN
      CALL ADD_XRB(pset,spec_ssp,tspec_ssp)
+     spec_ssp = tspec_ssp
+  ENDIF
+
+  !-------------------------------------------------------------!
+  !-------add the nebular emission model at the SSP level-------!
+  !-------------------------------------------------------------!
+
+  IF (add_neb_emission.EQ.2) THEN
+     CALL ADD_NEBULAR(pset,spec_ssp,tspec_ssp)
      spec_ssp = tspec_ssp
   ENDIF
 
@@ -265,5 +265,3 @@ SUBROUTINE SSP_GEN(pset,mass_ssp,lbol_ssp,spec_ssp)
 
 
 END SUBROUTINE SSP_GEN
-
-

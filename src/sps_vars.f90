@@ -124,18 +124,18 @@ MODULE SPS_VARS
   !turn on/off a Cloudy-based nebular emission model (cont+lines)
   !if set to 2, then the nebular emission lines are added at the SSP
   !level, which may be useful if the nebular parameters are fixed
-  INTEGER :: add_neb_emission=1
+  INTEGER :: add_neb_emission=0
   !turn on/off the nebular continuum component (automatically
   !turned off if the above is set to 0)
   INTEGER  :: add_neb_continuum=1
   !include dust in the Cloudy tables or not
-  INTEGER :: cloudy_dust=1
+  INTEGER :: cloudy_dust=0
 
   !turn on/off IGM absorption a la Madau (1995)
   INTEGER :: add_igm_absorption=0
 
   !turn on/off the X-ray binary (ULX) model from Garofali et al. (in prep)
-  INTEGER :: add_xrb_emission=1
+  INTEGER :: add_xrb_emission=0
 
   !turn on/off the addition of stellar remnants to the
   !computation of stellar masses
@@ -308,7 +308,7 @@ MODULE SPS_VARS
   !parameters for circumstellar dust models
   INTEGER, PARAMETER :: ntau_dagb=50, nteff_dagb=6
   !number of emission lines and continuum emission points
-  INTEGER, PARAMETER :: nemline=166, nlam_nebcont=2008
+  INTEGER, PARAMETER :: nemline=166, nlam_nebcont=15000
   !number of metallicity, age, and ionization parameter points
   INTEGER, PARAMETER :: nebnz=11, nebnage=9, nebnip=7
   !number of optical depths for AGN dust models
