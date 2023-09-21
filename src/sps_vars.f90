@@ -308,16 +308,16 @@ MODULE SPS_VARS
   !parameters for circumstellar dust models
   INTEGER, PARAMETER :: ntau_dagb=50, nteff_dagb=6
   !number of emission lines and continuum emission points
-  INTEGER, PARAMETER :: nemline=166, nlam_nebcont=15000
+  INTEGER, PARAMETER :: nemline=166, nlam_nebcont=1963
   !number of metallicity, age, and ionization parameter points
-  INTEGER, PARAMETER :: nebnz=11, nebnage=9, nebnip=7
+  INTEGER, PARAMETER :: nebnz=11, nebnage=10, nebnip=7
   !number of optical depths for AGN dust models
   INTEGER, PARAMETER :: nagndust=9
   !number of spectral points in the input library
   INTEGER, PARAMETER :: nagndust_spec=125
 
   INTEGER, PARAMETER :: nspec_xrb=15000
-  INTEGER, PARAMETER :: nt_xrb=9
+  INTEGER, PARAMETER :: nt_xrb=10
   INTEGER, PARAMETER :: nz_xrb=11
 
   !------------IMF-related Constants--------------!
